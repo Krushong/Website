@@ -25,79 +25,15 @@
     <!-- /Yandex.Metrika counter -->
     <!-- Конец подключения Яндекс Метрики -->
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <h1>Сайт для создания карточек для заучивания</h1>
-    <p>Карточки для заучивания</p>
+    <h1>Создание карточек для заучивания</h1>
+    <p>Карточки</p>
 
     <div id="cardsContainer"></div>
 
     <button id="createCardBtn">Создать карточку</button>
-
-    <script>
-        const cardsContainer = document.getElementById('cardsContainer');
-
-        // Создание 5 пустых карточек по умолчанию
-        for (let i = 0; i < 5; i++) {
-            createCard('', '');
-        }
-
-        document.getElementById('createCardBtn').addEventListener('click', () => {
-            const term = prompt('Введите термин:');
-            const definition = prompt('Введите определение:');
-            if (term) {
-                createCard(term, definition);
-            }
-        });
-
-        function createCard(term, definition) {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <div class="card-header">
-                    <button class="delete-btn" onclick="deleteCard(this)">
-                        <img src="garbage.png" alt="Удалить" />
-                    </button>
-                </div>
-                <div class="card-column">
-                    <textarea class="edit-input" oninput="autoResize(this)" onkeydown="handleMultilineInput(event)">${term || ''}</textarea>
-                    <label>Термин</label>
-                </div>
-                <div class="card-column">
-                    <textarea class="edit-input" oninput="autoResize(this)" onkeydown="handleMultilineInput(event)">${definition || ''}</textarea>
-                    <label>Определение</label>
-                </div>
-            `;
-            cardsContainer.appendChild(card);
-        }
-
-        function handleMultilineInput(event) {
-            // Разрешаем многострочный ввод при нажатии Shift+Enter
-            if (event.key === 'Enter' && event.shiftKey) {
-                event.preventDefault(); // Предотвращаем стандартное поведение
-                const start = event.target.selectionStart;
-                const end = event.target.selectionEnd;
-                const value = event.target.value;
-                
-                // Вставляем новую строку
-                event.target.value = value.substring(0, start) + '\n' + value.substring(end);
-                
-                // Перемещаем курсор
-                event.target.selectionStart = event.target.selectionEnd = start + 1;
-            }
-        }
-
-        function autoResize(textarea) {
-            // Автоматическое изменение высоты textarea
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
-        }
-
-        function deleteCard(button) {
-            const card = button.closest('.card');
-            cardsContainer.removeChild(card);
-        }
-    </script>
 </body>
 </html>
