@@ -1,0 +1,27 @@
+
+.delete-btn {
+    background: none; /* Убираем фон кнопки */
+    border: none; /* Убираем границу */
+    cursor: pointer; /* Курсор в виде указателя */
+    padding: 0;
+    margin: 0;
+}
+
+.delete-btn img {
+    width: 25px; /* Ширина иконки */
+    height: 25px; /* Высота иконки */
+}
+
+.upload-btn {
+    background: none; /* Убираем фон кнопки */
+    border: none; /* Убираем границу */
+    cursor: pointer; /* Курсор в виде указателя */
+    padding: 0; /* Убираем отступы */
+    margin: 0; /* Убираем отступы */
+    margin-right: 30px; /* Добавлено: отступ справа для сдвига влево */
+}
+
+.upload-icon {
+    width: 23px; /* Ширина иконки */
+    height: 23px; /* Высота иконки */
+}

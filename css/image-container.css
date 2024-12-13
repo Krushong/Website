@@ -1,0 +1,45 @@
+
+.image-container {
+    width: 70px; /* Ширина контейнера изображения на 100% */
+    height: 70px; /* Фиксированная высота для контейнера изображения */
+    overflow: hidden; /* Скрываем переполнение, если изображение больше */
+    display: flex; /* Используем flex для центрирования изображений */
+    justify-content: center; /* Центрируем содержимое по горизонтали */
+    align-items: center; /* Центрируем содержимое по вертикали */
+    margin-top: 5px; /* Добавляем отступ сверху */
+    margin-bottom: 5px; /* Добавляем отступ снизу */
+    border: 2px solid #ccc; /* Добавляем рамку вокруг изображения */
+    border-radius: 4px; /* Закругляем углы рамки (по желанию) */
+ 
+}
+
+.image-container img {
+    max-width: 100%; /* Ограничиваем ширину изображения */
+    max-height: 100%; /* Ограничиваем высоту изображения */
+    width: auto; /* Автоматическая ширина для сохранения пропорций */
+    height: auto; /* Автоматическая высота для сохранения пропорций */
+    object-fit: contain; /* Масштабируем изображение, сохраняя пропорции */
+}
+
+.delete-image-btn {
+    position: absolute; 
+    top: 5px; 
+    right: 5px; 
+    border: none; 
+    cursor: pointer; 
+    padding: 0; 
+    margin: 0;
+    display: none; 
+    width: 15px; /* Установите желаемую ширину */
+    height: 15px; /* Установите желаемую высоту */
+}
+
+.header-image-container {
+    position: relative; /* Добавлено для позиционирования дочерних элементов */
+}
+
+.delete-image-container {
+    position: absolute; /* Позиционирование кнопки */
+    top: 5px; /* Небольшой отступ от верхнего края */
+    right: 5px; /* Небольшой отступ от правого края */
+}

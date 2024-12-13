@@ -19,10 +19,10 @@ function createCard(term, definition) {
     card.innerHTML = `
         <div class="card-header">
             <button class="upload-btn" onclick="uploadImage(this)">
-                <img src="upload-icon.png" alt="Загрузить изображение" class="upload-icon" />
+                <img src="images/upload-icon.png" alt="Загрузить изображение" class="upload-icon" />
             </button>
             <button class="delete-btn" onclick="deleteCard(this)">
-                <img src="garbage.png" alt="Удалить" />
+                <img src="images/garbage.png" alt="Удалить" />
             </button>
         </div>
         <div class="card-column">
@@ -74,7 +74,7 @@ function uploadImage(button) {
     const deleteImageContainer = card.querySelector('.delete-image-container');
 
     const deleteImageButton = document.createElement('img');
-    deleteImageButton.src = 'delete-img-icon.png';
+    deleteImageButton.src = 'images/delete-img-icon.png';
     deleteImageButton.alt = 'Удалить изображение';
     deleteImageButton.className = 'delete-image-btn';
     deleteImageButton.style.display = 'none';

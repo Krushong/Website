@@ -1,0 +1,43 @@
+.card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column; /* Изменено для вертикальной структуры */
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #eaeaea;
+    position: relative;
+    padding-top: 30px; /* Добавим отступ сверху для кнопки */
+}
+
+.card-header {
+    position: absolute;
+    top: 5px; /* Небольшой отступ от верха */
+    right: 5px; /* Небольшой отступ справа */
+}
+
+.card-column {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    position: relative; /* Добавлено для позиционирования кнопки */
+}
+
+.edit-input { 
+    width: 100%; /* Полная ширина контейнера */
+    margin-bottom: 5px;
+    resize: none; /* Запрещаем ручное изменение размера */
+    overflow: hidden; /* Скрываем скроллбар */
+    max-width: 100%; /* Ограничим максимальную ширину текстовой области */
+}
+
+.card label {
+    display: block; /* Размещаем label под полем ввода */
+    text-align: center; /* Центрируем label */
+    font-size: 0.8em; /* Уменьшаем размер шрифта */
+    color: #666; /* Более светлый цвет */
+    margin-bottom: 10px; /* Отступ после label */
+}
