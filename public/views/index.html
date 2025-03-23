@@ -71,6 +71,19 @@
             <div id="cardsContainer"></div>
         </main>
     </div>
+
+    <!-- Модальное окно подтверждения -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <h3 class="modal-title">Подтверждение действия</h3>
+            <p class="modal-message">Вы уверены, что хотите удалить этот элемент?</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeConfirmModal()">Отмена</button>
+                <button class="modal-btn confirm" onclick="confirmAction()">Удалить</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/script.js"></script>
 </body>
 </html>

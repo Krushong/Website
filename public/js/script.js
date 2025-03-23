@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cardsContainer = document.getElementById('cardsContainer');
     const createCardBtn = document.getElementById('createCardBtn');
+    const confirmModal = document.getElementById('confirmModal');
+    let currentDeleteAction = null;
     
     // Структура данных для блоков и карточек
     let blocks = JSON.parse(localStorage.getItem('flashcardBlocks')) || [
@@ -11,6 +13,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
+    // Функции для работы с модальным окном
+    window.showConfirmModal = function(message, action) {
+        const modalMessage = confirmModal.querySelector('.modal-message');
+        modalMessage.textContent = message;
+        currentDeleteAction = action;
+        confirmModal.classList.add('active');
+    };
+
+    window.closeConfirmModal = function() {
+        confirmModal.classList.remove('active');
+        currentDeleteAction = null;
+    };
+
+    window.confirmAction = function() {
+        if (currentDeleteAction) {
+            currentDeleteAction();
+        }
+        closeConfirmModal();
+    };
+
+    // Закрытие модального окна при клике вне его
+    confirmModal.addEventListener('click', (e) => {
+        if (e.target === confirmModal) {
+            closeConfirmModal();
+        }
+    });
+
     // Функция для сохранения блоков
     function saveBlocks() {
         localStorage.setItem('flashcardBlocks', JSON.stringify(blocks));
@@ -18,61 +47,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Функция для создания HTML блока
     function createBlockElement(block, blockIndex) {
-        const blockDiv = document.createElement('div');
-        blockDiv.className = 'block';
-        blockDiv.innerHTML = `
-            <div class="block-header">
-                <h2 class="block-title" id="blockTitle${blockIndex}">${block.name}</h2>
-                <div class="block-actions">
-                    <button class="block-btn rename-btn" onclick="renameBlock(${blockIndex})">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                        Переименовать
-                    </button>
-                    <button class="block-btn add-card-btn" onclick="createCard(${blockIndex})">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Добавить карточку
-                    </button>
-                    ${blockIndex !== 0 ? `
-                        <button class="block-btn delete-btn" onclick="deleteBlock(${blockIndex})">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            </svg>
-                            Удалить блок
-                        </button>
-                    ` : ''}
-                </div>
-            </div>
-            <div class="cards-grid" id="cardsGrid${blockIndex}"></div>
+        const blockElement = document.createElement('div');
+        blockElement.className = 'block';
+        blockElement.dataset.blockId = block.id;
+
+        const header = document.createElement('div');
+        header.className = 'block-header';
+
+        const title = document.createElement('h2');
+        title.className = 'block-title';
+        title.textContent = block.name;
+        title.addEventListener('click', () => renameBlock(blockIndex));
+
+        const controls = document.createElement('div');
+        controls.className = 'block-controls';
+
+        const slideshowBtn = document.createElement('button');
+        slideshowBtn.className = 'block-btn slideshow-btn';
+        slideshowBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="2" ry="2"/>
+                <path d="M8 12h8"/>
+                <path d="M12 8l4 4-4 4"/>
+            </svg>
+            Карточки
         `;
+        slideshowBtn.addEventListener('click', () => {
+            window.location.href = `/slideshow.html?blockId=${block.id}`;
+        });
 
-        // Добавляем карточки в блок
-        const cardsGrid = blockDiv.querySelector(`#cardsGrid${blockIndex}`);
-        if (block.cards.length === 0) {
-            cardsGrid.innerHTML = `
-                <div class="empty-state">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="12" y1="8" x2="12" y2="16"></line>
-                        <line x1="8" y1="12" x2="16" y2="12"></line>
-                    </svg>
-                    <p>В этом блоке пока нет карточек</p>
-                    <p>Нажмите "Добавить карточку" чтобы начать</p>
-                </div>
-            `;
-        } else {
-            block.cards.forEach((card, cardIndex) => {
-                cardsGrid.appendChild(createCardElement(card, blockIndex, cardIndex));
-            });
-        }
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'block-btn delete-btn';
+        deleteBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18"/>
+                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                <path d="M10 11v6"/>
+                <path d="M14 11v6"/>
+            </svg>
+            Удалить
+        `;
+        deleteBtn.addEventListener('click', () => {
+            if (blockIndex === 0) {
+                alert('Нельзя удалить основной блок');
+                return;
+            }
+            showConfirmModal(
+                'Вы уверены, что хотите удалить этот блок со всеми карточками?',
+                () => {
+                    blocks.splice(blockIndex, 1);
+                    saveBlocks();
+                    renderBlocks();
+                }
+            );
+        });
 
-        return blockDiv;
+        controls.appendChild(slideshowBtn);
+        controls.appendChild(deleteBtn);
+        header.appendChild(title);
+        header.appendChild(controls);
+
+        const cardsContainer = document.createElement('div');
+        cardsContainer.className = 'cards-container';
+
+        block.cards.forEach((card, cardIndex) => {
+            const cardElement = createCardElement(card, blockIndex, cardIndex);
+            cardsContainer.appendChild(cardElement);
+        });
+
+        const addCardBtn = document.createElement('button');
+        addCardBtn.className = 'add-card-btn';
+        addCardBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14"/>
+                <path d="M5 12h14"/>
+            </svg>
+            Добавить карточку
+        `;
+        addCardBtn.addEventListener('click', () => createCard(blockIndex));
+
+        blockElement.appendChild(header);
+        blockElement.appendChild(cardsContainer);
+        blockElement.appendChild(addCardBtn);
+
+        return blockElement;
     }
 
     // Функция для создания HTML карточки
@@ -159,11 +217,14 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Нельзя удалить основной блок');
             return;
         }
-        if (confirm('Вы уверены, что хотите удалить этот блок со всеми карточками?')) {
-            blocks.splice(blockIndex, 1);
-            saveBlocks();
-            renderBlocks();
-        }
+        showConfirmModal(
+            'Вы уверены, что хотите удалить этот блок со всеми карточками?',
+            () => {
+                blocks.splice(blockIndex, 1);
+                saveBlocks();
+                renderBlocks();
+            }
+        );
     };
 
     // Функция для создания новой карточки
@@ -184,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Функция для редактирования карточки
     window.editCard = function(blockIndex, cardIndex) {
         const card = blocks[blockIndex].cards[cardIndex];
-        const cardElement = document.querySelector(`#cardsGrid${blockIndex}`).children[cardIndex];
+        const cardElement = document.querySelector(`.block[data-block-id="${blocks[blockIndex].id}"] .cards-container .card:nth-child(${cardIndex + 1})`);
         
         cardElement.innerHTML = `
             <div class="card-content">
@@ -282,11 +343,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Функция для удаления карточки
     window.deleteCard = function(blockIndex, cardIndex) {
-        if (confirm('Вы уверены, что хотите удалить эту карточку?')) {
-            blocks[blockIndex].cards.splice(cardIndex, 1);
-            saveBlocks();
-            renderBlocks();
-        }
+        showConfirmModal(
+            'Вы уверены, что хотите удалить эту карточку?',
+            () => {
+                blocks[blockIndex].cards.splice(cardIndex, 1);
+                saveBlocks();
+                renderBlocks();
+            }
+        );
     };
 
     // Функция для переворачивания карточки

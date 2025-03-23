@@ -11,4 +11,8 @@ router.get('/', (req, res) => {
     }
 });
 
+router.get('/slideshow.html', isAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/views/slideshow.html'));
+});
+
 module.exports = router; 
