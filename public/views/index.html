@@ -28,13 +28,36 @@
     <link rel="stylesheet" href="css/buttons.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/image-container.css">
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            margin-bottom: 20px;
+        }
+        .logout-btn {
+            padding: 8px 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
     <script src="js/script.js" defer></script>
 </head>
 
 <body>
-    <header>
+    <div class="header">
         <h1>Создание карточек для заучивания</h1>
-    </header>
+        <a href="/auth/logout" class="logout-btn">Выйти</a>
+    </div>
     <main>
         <section>
             <p>Карточки</p>
