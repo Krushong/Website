@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Простой сайт</title>
-    <!-- Подключение Яндекс Метрики -->
+    <title>Карточки для заучивания</title>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
         (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -23,47 +22,55 @@
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/99125642" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
-     <!-- Конец подключения Яндекс Метрики -->
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cards.css">
-    <link rel="stylesheet" href="css/image-container.css">
     <style>
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #f8f9fa;
-            margin-bottom: 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .logout-btn {
-            padding: 8px 16px;
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
+
+        body {
+            min-height: 100vh;
         }
-        .logout-btn:hover {
-            background-color: #c82333;
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                margin: 1rem auto;
+            }
         }
     </style>
-    <script src="js/script.js" defer></script>
 </head>
-
 <body>
-    <div class="header">
-        <h1>Создание карточек для заучивания</h1>
-        <a href="/auth/logout" class="logout-btn">Выйти</a>
-    </div>
-    <main>
-        <section>
-            <p>Карточки</p>
+    <div class="container">
+        <header>
+            <h1>Карточки для заучивания</h1>
+            <div class="user-info">
+                <span id="userName"></span>
+                <a href="/auth/logout" class="logout-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Выйти
+                </a>
+            </div>
+        </header>
+        <main>
+            <div class="controls">
+                <!-- Кнопки управления будут добавлены через JavaScript -->
+            </div>
             <div id="cardsContainer"></div>
-            <button id="createCardBtn">Создать карточку</button>
-        </section>
-    </main>
+        </main>
+    </div>
+    <script src="js/script.js"></script>
 </body>
 </html>

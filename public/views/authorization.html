@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Авторизация</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -13,36 +19,108 @@
             height: 100vh;
             background-color: #f0f0f0;
         }
+
         .auth-container {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 300px;
         }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
         .auth-button {
-            display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            padding: 12px 20px;
             font-size: 16px;
             color: white;
             background-color: #4285F4;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             text-decoration: none;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
         }
+
+        .auth-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-button.google {
+            background-color: #ffffff;
+            color: #757575;
+            border: 1px solid #dddddd;
+        }
+
+        .auth-button.google:hover {
+            background-color: #f8f8f8;
+        }
+
         .auth-button.yandex {
             background-color: #FFCC00;
             color: black;
+        }
+
+        .auth-button.yandex:hover {
+            background-color: #FFD633;
+        }
+
+        .auth-button svg {
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .welcome-text {
+            color: #718096;
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="auth-container">
         <h2>Авторизация</h2>
-        <a href="/auth/google" class="auth-button">Войти через Google</a>
-        <a href="/auth/yandex" class="auth-button yandex">Войти через Яндекс</a>
+        <p class="welcome-text">Войдите с помощью вашего аккаунта для доступа к карточкам для заучивания</p>
+        
+        <a href="/auth/google" class="auth-button google">
+            <svg width="18" height="18" viewBox="0 0 18 18">
+                <path fill="#4285F4" d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+                <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+                <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
+                <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+            </svg>
+            Войти через Google
+        </a>
+        
+        <a href="/auth/yandex" class="auth-button yandex">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M2.04 12c0-5.523 4.476-10 10-10 5.522 0 10 4.477 10 10s-4.478 10-10 10c-5.524 0-10-4.477-10-10z" fill="#FC3F1D"/>
+                <path d="M13.32 7.666h-.924c-1.694 0-2.585.858-2.585 2.123 0 1.43.616 2.1 1.881 2.959l1.045.704-3.003 4.487H7.49l2.695-4.014c-1.55-1.111-2.42-2.19-2.42-4.015 0-2.288 1.595-3.85 4.62-3.85h3.003v12.023H13.32V7.666z" fill="#fff"/>
+            </svg>
+            Войти через Яндекс
+        </a>
     </div>
 </body>
 </html>
