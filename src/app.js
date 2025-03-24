@@ -1,36 +1,85 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const YandexStrategy = require('passport-yandex').Strategy;
 const path = require('path');
-const passport = require('./config/passport');
-const authRoutes = require('./routes/auth');
-const indexRoutes = require('./routes/index');
 
 const app = express();
 
-// Настройка статических файлов
-app.use(express.static(path.join(__dirname, '../public')));
-
 // Настройка сессий
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
     resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 24 * 60 * 60 * 1000 // 24 часа
-    }
+    saveUninitialized: false
 }));
 
 // Инициализация Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Подключение маршрутов
-app.use('/', indexRoutes);
-app.use('/auth', authRoutes);
-app.use('/logout', authRoutes); // Добавляем маршрут для logout
+// Сериализация пользователя
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
-// Запуск сервера
-app.listen(process.env.PORT, () => {
-    console.log(`Сервер запущен на http://localhost:${process.env.PORT}`);
+// Настройка Google OAuth
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: `${process.env.APP_URL}/auth/google/callback`
+}, (accessToken, refreshToken, profile, done) => {
+    return done(null, profile);
+}));
+
+// Настройка Yandex OAuth
+passport.use(new YandexStrategy({
+    clientID: process.env.YANDEX_CLIENT_ID,
+    clientSecret: process.env.YANDEX_CLIENT_SECRET,
+    callbackURL: `${process.env.APP_URL}/auth/yandex/callback`
+}, (accessToken, refreshToken, profile, done) => {
+    return done(null, profile);
+}));
+
+// Статические файлы
+app.use(express.static('public'));
+
+// Маршруты авторизации
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => res.redirect('/')
+);
+
+app.get('/auth/yandex',
+    passport.authenticate('yandex')
+);
+
+app.get('/auth/yandex/callback',
+    passport.authenticate('yandex', { failureRedirect: '/login' }),
+    (req, res) => res.redirect('/')
+);
+
+// Главная страница
+app.get('/', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.send(`Привет, ${req.user.displayName}! <a href="/logout">Выйти</a>`);
+    } else {
+        res.sendFile(path.join(__dirname, '../public/authorization.html'));
+    }
+});
+
+// Выход
+app.get('/logout', (req, res) => {
+    req.logout(() => {
+        res.redirect('/');
+    });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Сервер запущен на порту ${PORT}`);
 }); 

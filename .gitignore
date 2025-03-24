@@ -14,3 +14,7 @@ yarn-error.log*
 # Системные файлы
 .DS_Store
 Thumbs.db 
+
+# key-SSH
+key-SSH
+key-SSH.pub

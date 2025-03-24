@@ -1,8 +1,8 @@
 # Используем Node.js
-FROM node:16-alpine
+FROM node:18-alpine
 
 # Создаем директорию приложения
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Копируем package.json и package-lock.json
 COPY package*.json ./
@@ -13,8 +13,15 @@ RUN npm install
 # Копируем исходный код и статические файлы
 COPY . .
 
-# Открываем порт из переменной окружения (по умолчанию 3000)
-EXPOSE ${PORT:-3000}
+# Установка переменных окружения по умолчанию
+ENV PORT=3000
+ENV GOOGLE_CLIENT_ID=""
+ENV GOOGLE_CLIENT_SECRET=""
+ENV YANDEX_CLIENT_ID=""
+ENV YANDEX_CLIENT_SECRET=""
+
+# Открываем порт
+EXPOSE 3000
 
 # Запускаем приложение
 CMD ["node", "src/app.js"]
