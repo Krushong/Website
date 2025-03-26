@@ -16,9 +16,8 @@ router.get('/google',
 
 router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/auth' }),
-    function(req, res) {
-        res.redirect('/');
-    });
+    (req, res) => res.redirect('/')  // Редирект на главную
+);
 
 router.get('/yandex',
     passport.authenticate('yandex', {
@@ -26,13 +25,9 @@ router.get('/yandex',
     }));
 
 router.get('/yandex/callback',
-    passport.authenticate('yandex', { 
-        failureRedirect: '/auth',
-        failureFlash: true
-    }),
-    function(req, res) {
-        res.redirect('/');
-    });
+    passport.authenticate('yandex', { failureRedirect: '/auth' }),
+    (req, res) => res.redirect('/')  // Редирект на главную
+);
 
 router.get('/logout', (req, res, next) => {
     req.logout(function(err) {

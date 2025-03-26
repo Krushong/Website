@@ -23,6 +23,13 @@ app.use(passport.session());
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
+// Подключение роутеров
+const authRouter = require('./routes/auth');
+const indexRouter = require('./routes/index');
+
+app.use('/', indexRouter);
+app.use('/auth', authRouter);
+
 // Настройка Google OAuth
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
