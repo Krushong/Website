@@ -42,7 +42,8 @@ passport.use(new YandexStrategy({
 }));
 
 // Статические файлы
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/views', express.static(path.join(__dirname, 'public/views')));
 
 // Маршруты авторизации
 app.get('/auth/google',
@@ -51,7 +52,7 @@ app.get('/auth/google',
 
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
-    (req, res) => res.redirect('/index.html')
+    (req, res) => res.redirect('/public/views/index.html')
 );
 
 app.get('/auth/yandex',
@@ -60,13 +61,13 @@ app.get('/auth/yandex',
 
 app.get('/auth/yandex/callback',
     passport.authenticate('yandex', { failureRedirect: '/login' }),
-    (req, res) => res.redirect('/index.html')
+    (req, res) => res.redirect('/public/views/index.html')
 );
 
 // Главная страница
 app.get('/', (req, res) => {
     if (req.isAuthenticated()) {
-        res.redirect('/index.html');
+        res.redirect('/views/index.html');
     } else {
         res.sendFile(path.join(__dirname, '../public/views/authorization.html'));
     }
