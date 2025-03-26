@@ -68,7 +68,7 @@ app.get('/', (req, res) => {
     if (req.isAuthenticated()) {
         res.send(`Привет, ${req.user.displayName}! <a href="/logout">Выйти</a>`);
     } else {
-        res.sendFile(path.join(__dirname, '../public/authorization.html'));
+        res.sendFile(path.join(__dirname, '../public/views/authorization.html'));
     }
 });
 
