@@ -51,7 +51,7 @@ app.get('/auth/google',
 
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
-    (req, res) => res.redirect('/')
+    (req, res) => res.redirect('/index.html')
 );
 
 app.get('/auth/yandex',
@@ -60,13 +60,13 @@ app.get('/auth/yandex',
 
 app.get('/auth/yandex/callback',
     passport.authenticate('yandex', { failureRedirect: '/login' }),
-    (req, res) => res.redirect('/')
+    (req, res) => res.redirect('/index.html')
 );
 
 // Главная страница
 app.get('/', (req, res) => {
     if (req.isAuthenticated()) {
-        res.send(`Привет, ${req.user.displayName}! <a href="/logout">Выйти</a>`);
+        res.redirect('/index.html');
     } else {
         res.sendFile(path.join(__dirname, '../public/views/authorization.html'));
     }
